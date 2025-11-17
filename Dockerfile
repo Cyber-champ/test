@@ -1,6 +1,6 @@
 # Multi-stage Dockerfile for the ChatApp Spring Boot backend
 # Stage 1: build with Maven (uses the Maven wrapper if present)
-FROM maven:3.8.8-openjdk-17 AS build
+FROM maven:3.8.8-openjdk-21 AS build
 WORKDIR /workspace/app
 
 # Copy only the files needed for dependency resolution first to leverage Docker cache
@@ -14,7 +14,7 @@ COPY src ./src
 RUN if [ -x "./mvnw" ]; then ./mvnw -B -DskipTests package; else mvn -B -DskipTests package; fi
 
 # Stage 2: runtime image
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:21-jre-jammy
 ARG JAR_FILE=/workspace/app/target/*.jar
 
 # Copy the executable jar from the build stage
